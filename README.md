@@ -138,6 +138,124 @@ The script:
 - The filter is based on the event start date only (events that start before the filter date but end after it are excluded)
 - Recurring events are handled as individual events as they appear in the ICS file
 
+# ICS Calendar Parser
+
+A toolkit for parsing ICS calendar files and converting events to structured formats (JSON and CSV).
+
+## Overview
+
+This project consists of two tools:
+
+1. **ics_parser.py**: Parses ICS (iCalendar) files and converts events to JSON
+2. **json_to_csv_converter.py**: Converts the JSON output to CSV format
+
+Together, these tools allow you to extract calendar data and analyze it in a format that's easy to work with.
+
+## Features
+
+- Extract event details including:
+  - Title
+  - Start time
+  - Duration
+  - Attendees and their status
+  - Notes
+  - Location
+- Identify internal vs external meetings based on attendee domains
+- Sort events chronologically
+- Handle special characters and encoding issues
+- Output to JSON and/or CSV formats
+
+## Requirements
+
+- Python 3.6+
+- Python packages:
+  - icalendar
+  - pytz
+
+Install the dependencies:
+
+```bash
+pip install icalendar pytz
+```
+
+## Usage
+
+### Step 1: Convert ICS to JSON
+
+```bash
+python ics_parser.py calendar.ics -o events.json -p
+```
+
+Parameters:
+- `calendar.ics`: Path to the input ICS file
+- `-o events.json`: Output JSON file (optional, default is stdout)
+- `-p`: Pretty print JSON (optional)
+
+### Step 2: Convert JSON to CSV
+
+```bash
+python json_to_csv_converter.py events.json -o events.csv
+```
+
+Parameters:
+- `events.json`: Path to the input JSON file
+- `-o events.csv`: Output CSV file (optional, default is events.csv)
+
+## JSON Output Format
+
+The JSON output includes detailed information about each event:
+
+```json
+[
+  {
+    "title": "Meeting with Team",
+    "start_time": "2023-03-15T10:00:00",
+    "duration": "1:00:00",
+    "duration_minutes": 60,
+    "attendees": [
+      {
+        "email": "person@example.com",
+        "status": "ACCEPTED",
+        "name": "Person Name"
+      }
+    ],
+    "notes": "Meeting notes here",
+    "location": "Conference Room A",
+    "meeting_type": "internal"
+  }
+]
+```
+
+## CSV Output Format
+
+The CSV output includes the following columns:
+- datetime
+- duration
+- title
+- meeting_type
+- attendee_emails (semicolon separated)
+
+## Internal vs External Meeting Classification
+
+Meetings are classified as:
+- **Internal**: When all attendees have email addresses from the following domains:
+  - ten10.com
+  - scalefactory.com
+  - thetestpeople.com
+- **External**: When at least one attendee has an email address from any other domain
+
+## Handling Special Characters
+
+The tools include special handling for Unicode characters and various encodings to ensure compatibility with different systems.
+
+## Error Handling
+
+Both tools include comprehensive error handling for issues such as:
+- Invalid ICS files
+- Encoding problems
+- Date parsing issues
+- Missing required fields
+
 ## License
 
 [MIT License](LICENSE)
