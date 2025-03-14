@@ -1,6 +1,11 @@
+# ICS Calendar Utils
+
+A set of utilities to process google calendar events.  Assumes an intial extraction from Google Calendar as an ICS file
+
 # ICS Calendar Date Filter
 
-A Python utility to filter ICS calendar files by date range. This tool allows you to extract events from a specific date forward or for a specific duration.
+A Python utility to filter ICS calendar files by date range. Google Calendar is able to extract only an ICS for a full calendar
+This tool allows you to extract events from a specific date forward or for a specific duration.
 
 ## Features
 
